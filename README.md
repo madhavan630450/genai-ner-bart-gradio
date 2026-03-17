@@ -25,8 +25,8 @@ Integrate the NER prediction function with the Gradio interface, allowing users 
 
 ### PROGRAM:
 ```
-NAME   : RAGA SUSANTH
-REF NO : 212224230217
+NAME   : MARIMUTHU MATHAVAN
+REF NO : 212224230153
 ```
 ```
 import os
@@ -58,18 +58,9 @@ def get_completion(inputs, parameters=None,ENDPOINT_URL=os.environ['HF_API_SUMMA
     return json.loads(response.content.decode("utf-8"))
 ```
 ```
-text = ('''Artificial Intelligence (AI) is a branch of computer science 
-        that focuses on creating systems capable of performing tasks 
-        that normally require human intelligence. These tasks include 
-        learning from experience, understanding natural language, 
-        recognizing patterns, and making decisions. AI technologies 
-        are widely used in applications such as virtual assistants, 
-        recommendation systems, autonomous vehicles, and medical 
-        diagnosis. As AI continues to evolve, it is expected to 
-        transform industries and improve efficiency in many areas 
-        of everyday life.''')
-
-get_completion(text)
+def ner(input):
+    output = get_completion(input, parameters=None, ENDPOINT_URL=API_URL)
+    return {"text": input, "entities": output}
 ```
 ```
 import gradio as gr
@@ -82,31 +73,6 @@ demo = gr.Interface(fn=summarize, inputs="text", outputs="text")
 demo.launch()
 ```
 ```
-import gradio as gr
-
-def summarize(input):
-    output = get_completion(input)
-    return output[0]['summary_text']
-
-gr.close_all()
-demo = gr.Interface(fn=summarize, 
-                    inputs=[gr.Textbox(label="Text to summarize", lines=6)],
-                    outputs=[gr.Textbox(label="Result", lines=3)],
-                    title="Text summarization with distilbart-cnn",
-                    description="Summarize any text using the `shleifer/distilbart-cnn-12-6` model under the hood!"
-                   )
-demo.launch()
-```
-```
-API_URL = os.environ['HF_API_NER_BASE'] #NER endpoint
-text = "My name is SUSANTH and I live in ANDHRA PRADESH"
-get_completion(text, parameters=None, ENDPOINT_URL= API_URL)
-```
-```
-def ner(input):
-    output = get_completion(input, parameters=None, ENDPOINT_URL=API_URL)
-    return {"text": input, "entities": output}
-
 gr.close_all()
 demo = gr.Interface(fn=ner,
                     inputs=[gr.Textbox(label="Text to find entities", lines=2)],
@@ -115,8 +81,8 @@ demo = gr.Interface(fn=ner,
                     description="Find entities using the `dslim/bert-base-NER` model under the hood!",
                     allow_flagging="never",
                     #Here we introduce a new tag, examples, easy to use examples for your application
-                    examples=["My name is SUSANTH and I live in ANDHRA PRADESH", "My name is RASOOL and i am studing in SAVEETHA ENGINEERING COLLEGE"])
-demo.launch()
+                    examples=["My name is Andrew and I live in California", "My name is Poli and work at HuggingFace"])
+demo.launch(share=True, server_port=int(os.environ['PORT3']))
 ```
 ```
 def merge_tokens(tokens):
@@ -154,12 +120,12 @@ demo.launch(share=True, server_port=int(os.environ['PORT4']))
 
 ### OUTPUT 1:
 
-
-
+<img width="1172" height="622" alt="image" src="https://github.com/user-attachments/assets/09c655b6-c1e3-4a30-b109-a3135b7a79e7" />
 
 ### OUTPUT 2:
 
-<img width="1245" height="376" alt="image" src="https://github.com/user-attachments/assets/85967e9b-89fa-497b-b663-caa12f4872d9" />
+<img width="1173" height="623" alt="image" src="https://github.com/user-attachments/assets/4b52e20f-7b79-41cf-9196-8044f9130712" />
+
 
 ### RESULT:
 The Named Entity Recognition (NER) prototype was successfully developed using a fine-tuned BART model. The system accurately identifies entities from input text and displays the results through an interactive Gradio web interface. Thus, the objective of building and deploying the NER application was achieved.
